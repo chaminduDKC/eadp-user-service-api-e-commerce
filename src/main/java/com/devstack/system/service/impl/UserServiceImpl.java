@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserService {
 
         UserRepresentation existingUser = null;
         keycloak = keycloakUtil.getKeycloakInstance();
-        System.out.println(keycloak);
         // Check if user already exists
         try {
             existingUser = keycloak.realm(realm).users().search(dto.getEmail()).stream()
@@ -94,18 +93,27 @@ public class UserServiceImpl implements UserService {
             throw new InternalServerException("Unexpected error during user lookup: " + e.getMessage());
         }
 
+        // if user is already in keycloak
         if (existingUser != null) {
+            // check if that user in database also
             Optional<SystemUser> byEmail = systemUserRepo.findByEmail(existingUser.getEmail());
             System.out.println(byEmail.isEmpty());
+            // if that user is not in database-> it means incomplete registration has been done before
+            // so, keycloak user delete in keycloak
             if (byEmail.isEmpty()) {
                 keycloak.realm(realm).users().delete(existingUser.getId());
 
+                // if user in database also, it means this user is registered before correctly
             } else {
                 throw new DuplicateEntryException("User with email " + dto.getEmail() + " already exists.");
             }
 
+            // if user not found in keycloak
         } else {
+            //checks user is in database
             Optional<SystemUser> byEmail = systemUserRepo.findByEmail(dto.getEmail());
+            // if user is in db means incomplete registration has been done before
+            // so the particular otp record and user record must be deleted.
             if (byEmail.isPresent()) {
                 Optional<Otp> bySystemUserId = otpRepo.findBySystemUserId(byEmail.get().getPropertyId());
                 if (bySystemUserId.isPresent()) {

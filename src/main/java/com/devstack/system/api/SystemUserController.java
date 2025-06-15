@@ -118,9 +118,7 @@ public class SystemUserController {
     }
 
     @GetMapping("/verify-admin")
-    public ResponseEntity<StandardResponse> verifyAdmin(
-            @RequestHeader("Authorization") String tokenHeader
-    ) {
+    public ResponseEntity<StandardResponse> verifyAdmin(@RequestHeader("Authorization") String tokenHeader) {
         String token = tokenHeader.replace("Bearer ", "");
         String email = jwtService.getEmail(token);
 

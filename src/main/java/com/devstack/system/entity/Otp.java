@@ -11,7 +11,6 @@ import java.util.Date;
 @Setter
 @Builder
 @Entity
-@ToString
 @Table(name = "otp")
 public class Otp {
     @Id

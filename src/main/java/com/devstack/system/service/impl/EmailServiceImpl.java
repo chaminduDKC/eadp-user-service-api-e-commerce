@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.Year;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class EmailServiceImpl implements EmailService {
         String htmlBody = emailTemplateHelper.loadHtmlTemplate("templates/dev-stack-send-reset-password-verification-email-template.html");
         htmlBody = htmlBody.replace("${otp}", otp);
         htmlBody = htmlBody.replace("${year}", String.valueOf(Year.now().getValue()));
-
+        
         Email from = new Email(senderEmail);
         Email to = new Email(toEmail);
         Content content = new Content("text/html", htmlBody);

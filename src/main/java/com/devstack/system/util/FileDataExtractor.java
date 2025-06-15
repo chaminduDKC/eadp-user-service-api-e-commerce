@@ -44,7 +44,7 @@ public class FileDataExtractor {
     }
     public String extractActualFileName(InputStreamReader data){
         try {
-            StringBuffer buf = new StringBuffer();
+            StringBuffer buf;// modified here
             String temp;
             BufferedReader bufReader = null;
             buf = new StringBuffer();

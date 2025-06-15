@@ -34,7 +34,8 @@ public class KeycloakSecurityUtil {
     public Keycloak getKeycloakInstance() {
         if(keycloak == null) {
             keycloak = KeycloakBuilder
-                    .builder().serverUrl(serverUrl)
+                    .builder()
+                    .serverUrl(serverUrl)
                     .realm(realm)
                     .clientId(clientId)
                     .clientSecret(secret)
@@ -44,4 +45,6 @@ public class KeycloakSecurityUtil {
         }
         return keycloak;
     }
+
+
 }
